@@ -1,4 +1,6 @@
 
+'use strict';
+
 var request = require('request');
 
 var Group = Parse.Object.extend("Group");
@@ -37,12 +39,12 @@ function fetchVideos(group)
   return promise;
 }
 
-var VIDEO_SERVER_URL = 'http://requestb.in/1arwn501'
+var VIDEO_SERVER_URL = 'http://requestb.in/1arwn501';
 
 function pushToServer(data)
 {
   request.post({
-    url: 'http://localhost:4001/',
+    url: VIDEO_SERVER_URL,
     json: data
   });
 }
@@ -59,7 +61,7 @@ Parse.Cloud.afterSave('Video', function(req) {
           videos: subset
         };
 
-    postToVideoServer(subset);
+    pushToServer(data);
   });
 
 });
