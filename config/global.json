@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "Mash": {
+            "applicationId": "Cflndkv2V6uHwgdVQA5a8SpauDMvxoIk96aRgqKE", 
+            "masterKey": "cfxKN5ChQrDRqApkLg4mdO0enXr202JF35rgtl5h"
+        }, 
+        "_default": {
+            "link": "Mash"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.18"
+    }
+}
