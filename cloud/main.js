@@ -15,6 +15,11 @@ function shuffle(array) {
   return array;
 }
 
+function randomSubset(array, size)
+{
+  return shuffle(array.concat()).slice(0, size);
+}
+
 function videosAroundDuration(videos, size, sec) {
   var shuffled = shuffle(videos),
       subset = [],
@@ -22,7 +27,10 @@ function videosAroundDuration(videos, size, sec) {
 
   do {
     var vid = videos.shift();
-    duration += (+vid.duration);
+    if (vid.duration == null) {
+      continue;
+    }
+    duration += vid.duration | 0;
     subset.push(vid);
   }
   while(shuffled.length > 0 && duration <= sec && subset.length <= size);
@@ -62,7 +70,8 @@ function pushToServer(data)
 Parse.Cloud.afterSave('Video', function(req) {
   var group = req.object.get('group');
   fetchVideos(group).then(function(videos) {
-    var subset = videosAroundDuration(videos, 6, 30),
+    // var subset = videosAroundDuration(videos, 6, 30),
+    var subset = randomSubset(videos, 6),
         data = {
           group: group,
           videos: subset
@@ -71,4 +80,17 @@ Parse.Cloud.afterSave('Video', function(req) {
     pushToServer(data);
   });
 
+});
+
+var Group = Parse.Object.extend('Group');
+
+Parse.Cloud.define('randomVideo', function(req, res) {
+  var groupId = req.params.group,
+      group = new Group();
+      group.id = groupId;
+
+  fetchVideos(group).then(function(videos) {
+    var video = videos[Math.floor(Math.random() * videos.length)];
+    res.success(video);
+  });
 });
