@@ -1,10 +1,6 @@
 
 'use strict';
 
-var request = require('request');
-
-var Group = Parse.Object.extend("Group");
-
 function shuffle(array) {
   var counter = array.length, temp, index;
 
@@ -43,17 +39,18 @@ var VIDEO_SERVER_URL = 'http://requestb.in/1arwn501';
 
 function pushToServer(data)
 {
-  request.post({
+  Parse.Cloud.httpRequest({
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
     url: VIDEO_SERVER_URL,
-    json: data
+    body: JSON.stringify(data)
   });
 }
 
 Parse.Cloud.afterSave('Video', function(req) {
-  var groupId = req.params.group,
-      group = new Group();
-      group.id = groupId;
-
+  var group = req.object.get('group');
   fetchVideos(group).then(function(videos) {
     var subset = randomSubset(videos, 6),
         data = {
