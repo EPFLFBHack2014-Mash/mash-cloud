@@ -1,7 +1,7 @@
 
 'use strict';
 
-var VIDEO_SERVER_URL = '67.222.130.233:6862/';
+var VIDEO_SERVER_URL = '188.226.254.4:6862/';
 
 function fetchVideos(group)
 {
