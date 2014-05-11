@@ -1,0 +1,14 @@
+.stream-container {
+  height: 100%;
+}
+
+#stream {
+  width: auto;
+  height: 100%;
+}
+
+
+video {
+  -webkit-transform: scale(0.7) rotate(90deg);
+  transform: rotate(90deg);
+}
