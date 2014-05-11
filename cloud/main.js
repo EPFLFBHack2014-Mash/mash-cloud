@@ -1,42 +1,7 @@
 
 'use strict';
 
-function shuffle(array) {
-  var counter = array.length, temp, index;
-
-  while (counter > 0) {
-    index = Math.floor(Math.random() * counter);
-    counter -= 1;
-    temp = array[counter];
-    array[counter] = array[index];
-    array[index] = temp;
-  }
-
-  return array;
-}
-
-function randomSubset(array, size)
-{
-  return shuffle(array.concat()).slice(0, size);
-}
-
-function videosAroundDuration(videos, size, sec) {
-  var shuffled = shuffle(videos),
-      subset = [],
-      duration = 0;
-
-  do {
-    var vid = videos.shift();
-    if (vid.duration == null) {
-      continue;
-    }
-    duration += vid.duration | 0;
-    subset.push(vid);
-  }
-  while(shuffled.length > 0 && duration <= sec && subset.length <= size);
-
-  return subset;
-}
+var VIDEO_SERVER_URL = '67.222.130.233:6862/';
 
 function fetchVideos(group)
 {
@@ -52,8 +17,6 @@ function fetchVideos(group)
 
   return promise;
 }
-
-var VIDEO_SERVER_URL = 'http://requestb.in/1arwn501';
 
 function pushToServer(data)
 {
@@ -94,3 +57,40 @@ Parse.Cloud.define('randomVideo', function(req, res) {
     res.success(video);
   });
 });
+
+function shuffle(array) {
+  var counter = array.length, temp, index;
+
+  while (counter > 0) {
+    index = Math.floor(Math.random() * counter);
+    counter -= 1;
+    temp = array[counter];
+    array[counter] = array[index];
+    array[index] = temp;
+  }
+
+  return array;
+}
+
+function randomSubset(array, size)
+{
+  return shuffle(array.concat()).slice(0, size);
+}
+
+// function videosAroundDuration(videos, size, sec) {
+//   var shuffled = shuffle(videos),
+//       subset = [],
+//       duration = 0;
+//
+//   do {
+//     var vid = videos.shift();
+//     if (vid.duration == null) {
+//       continue;
+//     }
+//     duration += vid.duration | 0;
+//     subset.push(vid);
+//   }
+//   while(shuffled.length > 0 && duration <= sec && subset.length <= size);
+//
+//   return subset;
+// }
