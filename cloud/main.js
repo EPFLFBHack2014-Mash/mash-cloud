@@ -15,37 +15,19 @@ function shuffle(array) {
   return array;
 }
 
-function randomSubset(array, size)
-{
-  return shuffle(array.concat()).slice(0, size);
-}
-
-function durationSumInRange(min, max) {
-  return function(array) {
-    var duration = array.map(function(el) {
-      return +el.duration;
-    }).reduce(function(a, b) {
-      return a + b;
-    });
-
-    return min <= duration && duration <= max;
-  };
-}
-
-function findSubsetWithCriteria(array, size, p)
-{
-  var subset, tries = 0;
+function videosAroundDuration(videos, size, sec) {
+  var shuffled = shuffle(videos),
+      subset = [],
+      duration = 0;
 
   do {
-    subset = randomSubset(array, size);
-    tries += 1;
-  } while(!p(subset) && tries < 10);
+    var vid = videos.shift();
+    duration += (+vid.duration);
+    subset.push(vid);
+  }
+  while(shuffled.length > 0 && duration <= sec && subset.length <= size);
 
   return subset;
-}
-
-function videosAroundDuration(videos, size, sec) {
-  return findSubsetWithCriteria(videos, size, durationSumInRange(sec - 5, sec + 5));
 }
 
 function fetchVideos(group)
